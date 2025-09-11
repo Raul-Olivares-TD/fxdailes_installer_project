@@ -12,6 +12,7 @@ class InstallerWindow(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("FXDailes Pipeline Installer")
+        self.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
         self.setFixedSize(640, 450)
         self.setWindowIcon(QtGui.QIcon(resource_path("logoApp03.png")))
         self.setObjectName("fondo")
