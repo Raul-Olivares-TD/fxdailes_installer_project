@@ -1,0 +1,12 @@
+# Temp files
+*.pyc
+tempCodeRunnerFile.py
+*.spec
+
+# Pip
+get-pip.py
+
+# Folders
+Pipeline
+build
+dist

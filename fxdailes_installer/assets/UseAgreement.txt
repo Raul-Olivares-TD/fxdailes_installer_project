@@ -1,0 +1,15 @@
+By installing and using this software (hereinafter referred to as "the Pipeline"), you agree to the following terms and conditions:
+
+1- Limited Use: The Pipeline is intended solely for educational and personal learning purposes. Commercial, professional, or profit-driven use is strictly prohibited.
+
+2- Distribution Prohibition: Copying, distributing, sublicensing, selling, or sharing the Pipeline with third parties is strictly forbidden.
+
+3- Modifications: You may modify or adapt the Pipeline only for personal and educational use. Any modifications must not be distributed or published without the express permission of the author.
+
+4- Liability: The author of the Pipeline is not responsible for any damage, data loss, or issues arising from the use of this software.
+
+5- Intellectual Property: All intellectual property rights of the Pipeline and its code remain with the author. Use of this software does not grant any ownership rights.
+
+6- Termination of Use: Any violation of these terms may result in revocation of the right to use the Pipeline and legal action.
+
+By continuing with the installation, you acknowledge that you have read, understood, and agree to the terms of this agreement.
