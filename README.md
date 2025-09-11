@@ -1,5 +1,4 @@
-# PipeExec
-Pipeline installer.
+# Pipeline installer.
 
 ## License / Licencia
 This project is licensed under a **Custom Proprietary License**. EN  
