@@ -1,5 +1,5 @@
 """
-Script for initialize the app.J
+Script for initialize the app.
 """
 import sys
 from PySide6 import QtWidgets
