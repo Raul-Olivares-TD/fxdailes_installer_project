@@ -49,7 +49,7 @@ class InstallerLogic(QObject):
         The main method that executes the installation steps.
         """
         try:
-            total_steps = 7
+            total_steps = 8
             
             self.progress_updated.emit(int(1/total_steps * 100), "Getting Houdini preferences directory...")
             time.sleep(0.5)
@@ -74,7 +74,11 @@ class InstallerLogic(QObject):
             if not self._is_package_installed("gazu"):
                 subprocess.run([str(self.hython_exe), "-m", "pip", "install", "gazu"], check=True, capture_output=True)
 
-            self.progress_updated.emit(int(7/total_steps * 100), "Finishing installation...")
+            self.progress_updated.emit(int(7/total_steps * 100), "Checking and installing Ffmpeg...")
+            if not self._is_package_installed("ffmpeg-python"):
+                subprocess.run([str(self.hython_exe), "-m", "pip", "install", "ffmpeg-python"], check=True, capture_output=True)
+
+            self.progress_updated.emit(int(8/total_steps * 100), "Finishing installation...")
             time.sleep(0.5)
 
             self.installation_finished.emit(True, "Installation complete!")
