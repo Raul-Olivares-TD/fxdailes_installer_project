@@ -49,7 +49,7 @@ class InstallerLogic(QObject):
         The main method that executes the installation steps.
         """
         try:
-            total_steps = 9
+            total_steps = 8
             
             self.progress_updated.emit(int(1/total_steps * 100), "Getting Houdini preferences directory...")
             time.sleep(0.5)
@@ -78,11 +78,7 @@ class InstallerLogic(QObject):
             if not self._is_package_installed("ffmpeg-python"):
                 subprocess.run([str(self.hython_exe), "-m", "pip", "install", "ffmpeg-python"], check=True, capture_output=True)
 
-            self.progress_updated.emit(int(8/total_steps * 100), "Checking and installing Requests-toolbelt...")
-            if not self._is_package_installed("requests-toolbelt"):
-                subprocess.run([str(self.hython_exe), "-m", "pip", "install", "requests-toolbelt"], check=True, capture_output=True)
-
-            self.progress_updated.emit(int(9/total_steps * 100), "Finishing installation...")
+            self.progress_updated.emit(int(8/total_steps * 100), "Finishing installation...")
             time.sleep(0.5)
 
             self.installation_finished.emit(True, "Installation complete!")
@@ -119,6 +115,7 @@ class InstallerLogic(QObject):
         config_path = self.project_path / "Pipeline" / "config"
         config_path.mkdir(parents=True, exist_ok=True)
         config['PROJECT'] = {'folderpath': self.project_path.as_posix()}
+        config['PIPELINE'] = {'version': '3.0.0'}
         with open(config_path / "credentials.ini", "w") as f:
             config.write(f)
 
