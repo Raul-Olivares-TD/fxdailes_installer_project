@@ -31,7 +31,9 @@ class InstallerLogic(QObject):
         # Paths for resources needed during installation
         # Note: These paths should be resolved in the main thread before starting
         self.pipeline_source_path = self._resource_path_logic("Pipeline")
-        self.get_pip_script_path = self._resource_path_logic("get-pip.py", is_asset=False)
+        # self.get_pip_script_path = self._resource_path_logic("get-pip.py", is_asset=False)
+        self.get_pip_script_path = self._resource_path_logic("get-pip.py")
+        self.get_version_path = self._resource_path_logic("version_control.json")
 
     def _resource_path_logic(self, relative_path, is_asset=True) -> str:
         """
@@ -107,6 +109,16 @@ class InstallerLogic(QObject):
         with open(packages_path / "fxdpipe.json", "w") as f:
             json.dump(json_content, f, indent=4)
 
+    def _get_pipeline_version(self) -> str:
+        """
+        Get the version from the version_control.json.
+
+        Returns:
+            version (str): Pipeline Version.
+        """
+        with open(self.get_version_path, "r") as j:
+            return json.load(j)['version']
+
     def _create_config_file(self):
         """
         Creates the credentials.ini file.
@@ -115,7 +127,7 @@ class InstallerLogic(QObject):
         config_path = self.project_path / "Pipeline" / "config"
         config_path.mkdir(parents=True, exist_ok=True)
         config['PROJECT'] = {'folderpath': self.project_path.as_posix()}
-        config['PIPELINE'] = {'version': '3.0.0'}
+        config['PIPELINE'] = {'version': f'{self._get_pipeline_version()}'}
         with open(config_path / "credentials.ini", "w") as f:
             config.write(f)
 
