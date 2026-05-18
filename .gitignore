@@ -10,3 +10,5 @@ get-pip.py
 Pipeline
 build
 dist
+/.venv
+/.idea
