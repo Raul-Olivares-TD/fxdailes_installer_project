@@ -55,7 +55,7 @@ class InstallerLogic(QObject):
             
             self.progress_updated.emit(int(1/total_steps * 100), "Getting Houdini preferences directory...")
             time.sleep(0.5)
-            pref_dir = self._get_houdini_pref_dir()
+            pref_dir = self._get_houdini_pref_dir(self.houdini_bin_path)
             
             self.progress_updated.emit(int(2/total_steps * 100), "Creating environment JSON file...")
             time.sleep(0.5)
@@ -88,7 +88,7 @@ class InstallerLogic(QObject):
         except (subprocess.CalledProcessError, FileNotFoundError, Exception) as e:
             self.installation_finished.emit(False, f"An error occurred: {e}")
 
-    def _get_houdini_pref_dir(self) -> Path:
+    def _get_houdini_pref_dir(self, project_path: Path) -> Path:
         """
         Gets the HOUDINI_USER_PREF_DIR from Houdini.
         """
@@ -97,12 +97,18 @@ class InstallerLogic(QObject):
             result = subprocess.run(cmd, capture_output=True, text=True, check=True)
             return Path(result.stdout.strip())
         except:
+            import re
             from platformdirs import user_documents_dir
 
-            # Esto funciona en Windows, Mac y Linux automáticamente
             documents_path = user_documents_dir()
 
-            return Path(documents_path)
+            match = re.search(r'Houdini (\d+\.\d+)\.\d+', str(project_path))
+            if match:
+                houdini_version = f"houdini{match.group(1)}"
+            else:
+                raise f"No HOUDINI_USER_PREF_DIR founded at: {documents_path}"
+
+            return Path(documents_path) / houdini_version
 
 
     def _create_env_json(self, pref_dir: Path):
