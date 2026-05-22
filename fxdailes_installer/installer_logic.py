@@ -52,18 +52,18 @@ class InstallerLogic(QObject):
         """
         try:
             total_steps = 5
-            
+
             self.progress_updated.emit(int(1/total_steps * 100), "Getting Houdini preferences directory...")
             time.sleep(0.5)
             pref_dir = self._get_houdini_pref_dir(self.houdini_bin_path)
-            
+
             self.progress_updated.emit(int(2/total_steps * 100), "Creating environment JSON file...")
             time.sleep(0.5)
             self._create_env_json(pref_dir)
 
             self.progress_updated.emit(int(3/total_steps * 100), "Creating configuration file...")
             time.sleep(0.5)
-            self._create_config_file()
+            self._create_config_file(self.houdini_bin_path)
 
             self.progress_updated.emit(int(4/total_steps * 100), "Copying pipeline files...")
             shutil.copytree(self.pipeline_source_path, self.project_path / "Pipeline", dirs_exist_ok=True)
@@ -137,7 +137,7 @@ class InstallerLogic(QObject):
         with open(self.get_version_path, "r") as j:
             return json.load(j)['version']
 
-    def _create_config_file(self):
+    def _create_config_file(self, houdini_bin_path: Path):
         """
         Creates the credentials.ini file.
         """
@@ -146,6 +146,9 @@ class InstallerLogic(QObject):
         config_path.mkdir(parents=True, exist_ok=True)
         config['PROJECT'] = {'folderpath': self.project_path.as_posix()}
         config['PIPELINE'] = {'version': f'{self._get_pipeline_version()}'}
+        config['HOUDINI_USER_PREF_DIR'] = {
+            'json_file': f"{self._get_houdini_pref_dir(houdini_bin_path).as_posix()}/packages/fxdpipe.json"
+        }
         with open(config_path / "credentials.ini", "w") as f:
             config.write(f)
 
